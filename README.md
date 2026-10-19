@@ -1,6 +1,6 @@
 # ko-decision-bench
 
-[한국어](README.ko.md)
+[Korean](README.ko.md)
 
 A reproducible Korean benchmark for **decision models**: Jev / System One-style models that read a text and a typed question and return a probability per option in one forward pass, without generating text. Model cards each use their own prompts and splits; this benchmark asks every model the same questions and scores them the same way.
 
@@ -48,8 +48,8 @@ Measured on an Apple M6 with 32 GB: 8 models, 7 tasks, 1,400 questions per model
 | Task | Type | Source (split) | Options | License |
 |---|---|---|---|---|
 | `unsmile_hate` | yes/no | smilegate-ai/kor_unsmile (valid), 100 per class | Hate or abuse present | CC BY-NC-ND 4.0 |
-| `kornli_xnli` | choice | kakaobrain/kor_nli (xnli test) | 함의 / 중립 / 모순 | CC BY-SA 4.0; translated from XNLI (CC BY-NC 4.0) |
-| `klue_nli` | choice | klue/klue nli (validation) | 함의 / 중립 / 모순 | CC BY-SA 4.0 |
+| `kornli_xnli` | choice | kakaobrain/kor_nli (xnli test) | entailment / neutral / contradiction | CC BY-SA 4.0; translated from XNLI (CC BY-NC 4.0) |
+| `klue_nli` | choice | klue/klue nli (validation) | entailment / neutral / contradiction | CC BY-SA 4.0 |
 | `klue_ynat` | choice | klue/klue ynat (validation) | 7 news sections | CC BY-SA 4.0 |
 | `klue_sts` | score | klue/klue sts (validation) | Similarity, 6 levels | CC BY-SA 4.0 |
 | `kobest_boolq` | yes/no | skt/kobest_v1 boolq (test) | yes / no | CC BY-SA 4.0 |
