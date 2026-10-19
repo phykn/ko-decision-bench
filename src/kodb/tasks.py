@@ -1,8 +1,3 @@
-"""Korean tasks: where each comes from, its licence, and how its questions are built.
-
-Every source is pinned to a Hugging Face commit. `build` downloads the files with huggingface_hub and writes
-data/<task>.jsonl locally; the derived questions are never committed (see the licence column in the README).
-"""
 import json
 import random
 from pathlib import Path
@@ -65,7 +60,6 @@ def build_records(task, n=N, seed=SEED):
     rows, rnd = load_rows(task), random.Random(seed)
     out = []
     if task == "unsmile_hate":
-        # balanced: half clean comments, half with any hate/abuse label
         hate = [r for r in rows if r["clean"] == 0]
         clean = [r for r in rows if r["clean"] == 1]
         picked = sample(hate, n // 2, rnd) + sample(clean, n - n // 2, rnd)
@@ -82,7 +76,7 @@ def build_records(task, n=N, seed=SEED):
                                      "criteria": YNAT, "label": names[r["label"]]}))
     elif task == "klue_sts":
         for r in sample(rows, n, rnd):
-            level = min(5, int(r["labels"]["label"] + 0.5))   # 0-5 real-valued similarity, rounded to 6 levels
+            level = min(5, int(r["labels"]["label"] + 0.5))   # the source label is real-valued
             out.append((f"문장 1: {r['sentence1']}\n문장 2: {r['sentence2']}",
                         {"type": "score", "instructions": "두 문장의 의미가 얼마나 비슷한가요?", "criteria": STS,
                          "label": level}))

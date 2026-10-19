@@ -1,10 +1,3 @@
-"""Model adapters. Each turns one typed question into probabilities over `options(q)`, in that order.
-
-Question shapes (the Kev eval format):
-  noul    {"instructions", "label": bool}                         options: ["false", "true"]
-  choice  {"instructions", "criteria": {name: description}, "label": name}
-  score   {"instructions", "criteria": [level, ...] low to high, "label": level index}
-"""
 import atexit
 import json
 import subprocess
@@ -31,7 +24,6 @@ def label_index(q):
 
 
 class Adapter:
-    """Load the model in __init__; decide() returns one probability per option of options(q)."""
     runtime = "?"
     device = "?"
 
@@ -79,8 +71,7 @@ def kev_info(url):
 
 
 def start_kev(run, url, timeout=900):
-    """Start kev.serve for run on url's local port in its own uv environment (Kev pins torch<2.9, apart from the
-    models extra), with this project's HF_HOME. Stopped when kodb exits. Returns the server's /v1/models entry."""
+    # its own uv environment: Kev pins torch<2.9, which the models extra does not
     u = httpx.URL(url)
     if u.host not in ("127.0.0.1", "localhost"):
         raise SystemExit(f"no kev.serve at {url}, and kodb starts one only on this machine")
@@ -102,8 +93,6 @@ def start_kev(run, url, timeout=900):
 
 
 class KevHttp(Adapter):
-    """kev.serve (https://github.com/jaredpalmer/kev), through its System One API (POST /v1/systemone).
-    Uses the server already at `url`, or starts one."""
     runtime = "kev.serve (HTTP)"
 
     def __init__(self, cfg):
@@ -130,7 +119,6 @@ class KevHttp(Adapter):
 
 
 class Laya(TorchAdapter):
-    """convaiinnovations/laya-* and fine-tunes of it, through the `laya` package."""
 
     def __init__(self, cfg):
         super().__init__(cfg)
@@ -145,9 +133,8 @@ class Laya(TorchAdapter):
         return list(a["probabilities"].values()) if q["type"] == "score" else [a["probabilities"][k] for k in q["criteria"]]
 
 
+# the PyTorch runtime shipped in the model repo, so results follow the authors' code
 class JevStyle(TorchAdapter):
-    """chaoliangUNSW/Jev-Style-*: the PyTorch runtime shipped in the repo (jev_style_decision.py)."""
-
     def __init__(self, cfg):
         super().__init__(cfg)
         sys.path.insert(0, self.path)
@@ -164,7 +151,6 @@ class JevStyle(TorchAdapter):
 
 
 class Nari(TorchAdapter):
-    """blackmallangcow/nari-decision-*: trust_remote_code model with a decide() method."""
 
     def __init__(self, cfg):
         super().__init__(cfg)
@@ -187,9 +173,8 @@ class Nari(TorchAdapter):
         return [a["probs"][k] for k in options(q)]
 
 
+# the readout recipe from the model card; the repo ships no inference code
 class CoCo(TorchAdapter):
-    """corners-ai/CoCo-Decision-2.4-4B: the readout recipe from its model card (letter-token readout head)."""
-
     def __init__(self, cfg):
         super().__init__(cfg)
         from safetensors.torch import load_file

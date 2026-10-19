@@ -1,4 +1,3 @@
-"""kodb build | run | score"""
 import argparse
 import hashlib
 import json
@@ -53,7 +52,7 @@ def run(model, task_names, cfg, data_dir, results_dir):
 
 
 def main():
-    ap = argparse.ArgumentParser(prog="kodb", description=__doc__)
+    ap = argparse.ArgumentParser(prog="kodb")
     ap.add_argument("--data", default="data", help="folder with the built <task>.jsonl files")
     ap.add_argument("--results", default="results", help="folder for <model>/<task>.json")
     ap.add_argument("--models", default="models.toml")

@@ -1,4 +1,3 @@
-"""Uniform metrics over results/<model>/<task>.json, whatever runtime produced them."""
 import json
 import math
 from pathlib import Path
