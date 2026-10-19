@@ -1,0 +1,32 @@
+[project]
+name = "ko-decision-bench"
+version = "0.1.0"
+description = "A small, reproducible Korean benchmark for decision models that return probabilities for typed questions"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.11"
+dependencies = [
+    "huggingface-hub>=1.0",
+    "pyarrow>=17",
+    "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+# in-process adapters (laya, Jev-Style, nari, CoCo); the kev-http adapter needs only the core dependencies
+models = [
+    "torch>=2.8",
+    "transformers>=5.0",
+    "safetensors>=0.5",
+    "numpy>=2.0",
+    "laya>=0.4.11",
+]
+
+[project.scripts]
+kodb = "kodb.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/kodb"]

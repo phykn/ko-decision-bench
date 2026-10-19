@@ -1,0 +1,70 @@
+# Models under test. `trained_on` records, per task, what the model card says about training data:
+#   "split"   the card lists this dataset and the model trained on another split of it (the benchmark uses a
+#             held-out split, so the items are unseen but the distribution is in-domain)
+#   "related" the card lists Korean data for the same task from another source
+#   "unknown" the card mentions data that may cover this task but does not name it
+# A task left out means the card names nothing related. Cards were read on 2026-10-19 at the pinned revisions.
+
+[models."nari-4b"]
+adapter = "nari"
+repo = "blackmallangcow/nari-decision-4b"
+revision = "029c4628a38859dce5b0db1742e9c97545aabe12"
+card_license = "Apache-2.0"
+trained_on = { kornli_xnli = "split", klue_nli = "split", klue_ynat = "split", klue_sts = "split", kobest_boolq = "split", kobest_copa = "split", unsmile_hate = "related" }
+note = "Card lists kakaobrain/kor_nli, klue/klue and skt/kobest_v1 (configs not named), and Korean hate speech (K-MHaS, nayohan/korean-hate-speech, KoSBi). XNLI is listed as evaluation-only."
+
+[models."coco-2.4-4b"]
+adapter = "coco"
+repo = "corners-ai/CoCo-Decision-2.4-4B"
+revision = "64ce98c8b3a2661362ff6213bc350c26124247ea"
+card_license = "Apache-2.0"
+trained_on = { kornli_xnli = "unknown", klue_nli = "unknown", kobest_boolq = "unknown", kobest_copa = "unknown" }
+note = "Built on CoCo-Decision-4B-Ko, whose card says 'publicly available Korean and English datasets (intent, reading comprehension, NLI, sentiment, reasoning)' without naming them."
+
+[models."malkuth-2b"]
+adapter = "kev-http"
+repo = "dhtocks/malkuth-2b"
+revision = "37ae1672eebcf9ee5417418bd0be49f2e53d9087"
+card_license = "CC BY-NC 4.0"
+trained_on = { klue_nli = "split", klue_ynat = "split", kobest_boolq = "split", kobest_copa = "split" }
+note = "Training mix (newfull5/malkuth tools/build_train_mix.py): KLUE NLI/YNAT train, KoBEST BoolQ/COPA/WiC train, NSMC, XNLI train (no Korean). Kev-format adapter, served by kev.serve."
+
+[models."kev-4b"]
+adapter = "kev-http"
+repo = "jaredpalmer/kev-4b"
+revision = "v1.0"
+card_license = "Apache-2.0"
+trained_on = {}
+note = "No Korean training data listed (English MultiNLI and BoolQ among ten English sources)."
+
+[models."kev-0.8b"]
+adapter = "kev-http"
+repo = "jaredpalmer/kev-0.8b"
+revision = "v1.0"
+card_license = "Apache-2.0"
+trained_on = {}
+note = "Same data as kev-4b."
+
+[models."jev-style-0.8b-v3"]
+adapter = "jev-style"
+repo = "chaoliangUNSW/Jev-Style-0.8B-Decision-v3"
+revision = "b023d1f9c7858fbf01504577a3bfc349ea5c7385"
+card_license = "Apache-2.0"
+trained_on = { kornli_xnli = "unknown", klue_nli = "unknown" }
+note = "Card lists 'MNLI and translated NLI' in 19 languages without naming them; XNLI is evaluation-only."
+
+[models."laya-ko"]
+adapter = "laya"
+repo = "2nugu/laya-ko"
+revision = "386561111d95a85f6025882337a3cfd9e54c03ef"
+card_license = "Apache-2.0"
+trained_on = { klue_nli = "split", klue_ynat = "split", klue_sts = "split" }
+note = "KLUE YNAT/NLI/STS/RE train splits plus AI-Hub corpora."
+
+[models."laya-multilingual"]
+adapter = "laya"
+repo = "convaiinnovations/laya-multilingual"
+revision = "1720e3e3357cfe1e281542e223f8273b0890ca34"
+card_license = "Apache-2.0"
+trained_on = {}
+note = "Card does not list its training data; it reports XNLI in 15 languages (Korean is not an XNLI language)."
