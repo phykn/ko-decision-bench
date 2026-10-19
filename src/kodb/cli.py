@@ -7,8 +7,8 @@ from datetime import date
 from pathlib import Path
 
 from . import tasks as T
-from .adapters import ADAPTERS, label_index, options
-from .score import report
+from .adapters import ADAPTERS
+from .score import brier, report
 
 
 def load_models(path):
@@ -32,12 +32,11 @@ def run(model, task_names, cfg, data_dir, results_dir):
                 ms = (time.perf_counter() - t1) * 1000
                 total = sum(p)
                 p = [x / total for x in p]
-                y = label_index(q)
+                y = T.label_index(q)
                 top = max(range(len(p)), key=p.__getitem__)
-                rows.append({"id": rec["id"], "question": qid, "type": q["type"], "label": options(q)[y],
-                             "answer": options(q)[top], "probs": [round(x, 5) for x in p], "correct": top == y,
-                             "brier": round(sum((pk - (k == y)) ** 2 for k, pk in enumerate(p)), 5),
-                             "ms": round(ms, 1)})
+                rows.append({"id": rec["id"], "question": qid, "type": q["type"], "label": T.options(q)[y],
+                             "answer": T.options(q)[top], "probs": [round(x, 5) for x in p], "correct": top == y,
+                             "brier": round(brier(p, y), 5), "ms": round(ms, 1)})
         data = (Path(data_dir) / f"{task}.jsonl").read_bytes()
         acc = sum(r["correct"] for r in rows) / len(rows)
         out = Path(results_dir) / model / f"{task}.json"

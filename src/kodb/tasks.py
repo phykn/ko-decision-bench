@@ -39,12 +39,16 @@ TASKS = {
 }
 
 
+def read_jsonl(path):
+    return [json.loads(line) for line in Path(path).read_text(encoding="utf-8").split("\n") if line.strip()]
+
+
 def load_rows(task):
     t = TASKS[task]
     path = hf_hub_download(t["repo"], t["file"], repo_type="dataset", revision=t["revision"])
     if path.endswith(".parquet"):
         return pq.read_table(path).to_pylist()
-    return [json.loads(line) for line in open(path, encoding="utf-8") if line.strip()]
+    return read_jsonl(path)
 
 
 def sample(rows, n, rnd):
@@ -108,4 +112,22 @@ def load(task, data_dir):
     path = Path(data_dir) / f"{task}.jsonl"
     if not path.exists():
         raise SystemExit(f"{path} is missing. Build it first: kodb build {task}")
-    return [json.loads(line) for line in open(path, encoding="utf-8") if line.strip()]
+    return read_jsonl(path)
+
+
+def options(q):
+    if q["type"] == "noul":
+        return ["false", "true"]
+    return list(q["criteria"])
+
+
+def label_index(q):
+    if q["type"] == "noul":
+        return int(bool(q["label"]))
+    if q["type"] == "choice":
+        return list(q["criteria"]).index(q["label"])
+    return int(q["label"])
+
+
+def unlabeled(q):
+    return {k: v for k, v in q.items() if k != "label"}

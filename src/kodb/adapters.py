@@ -3,24 +3,12 @@ import json
 import subprocess
 import sys
 import time
+from pathlib import Path
 
 import httpx
 
 from . import ROOT
-
-
-def options(q):
-    if q["type"] == "noul":
-        return ["false", "true"]
-    return list(q["criteria"])
-
-
-def label_index(q):
-    if q["type"] == "noul":
-        return int(bool(q["label"]))
-    if q["type"] == "choice":
-        return list(q["criteria"]).index(q["label"])
-    return int(q["label"])
+from .tasks import options, unlabeled
 
 
 class Adapter:
@@ -43,21 +31,17 @@ class TorchAdapter(Adapter):
     def __init__(self, cfg):
         super().__init__(cfg)
         import torch
+        from huggingface_hub import snapshot_download
         self.torch = torch
         self.device = "mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu"
-        self.path = snapshot(cfg)
+        self.path = snapshot_download(cfg["repo"], revision=cfg["revision"],
+                                      ignore_patterns=["assets/*", "figures/*", "onnx/*", "*.gguf", "*.mp4", "*.gif", "*.png"])
 
     def sync(self):
         if self.device == "mps":
             self.torch.mps.synchronize()
         elif self.device == "cuda":
             self.torch.cuda.synchronize()
-
-
-def snapshot(cfg):
-    from huggingface_hub import snapshot_download
-    return snapshot_download(cfg["repo"], revision=cfg["revision"],
-                             ignore_patterns=["assets/*", "figures/*", "onnx/*", "*.gguf", "*.mp4", "*.gif", "*.png"])
 
 
 KEV = "kev[serve] @ git+https://github.com/jaredpalmer/kev@6b719c3c3f367295f6ef336f4f751cf5ff970abc"   # the commit the results were measured with
@@ -75,12 +59,14 @@ def start_kev(run, url, timeout=900):
     u = httpx.URL(url)
     if u.host not in ("127.0.0.1", "localhost"):
         raise SystemExit(f"no kev.serve at {url}, and kodb starts one only on this machine")
-    log = ROOT / "logs" / f"kev-serve-{u.port}.log"
+    port = u.port or 80
+    log = ROOT / "logs" / f"kev-serve-{port}.log"
     log.parent.mkdir(exist_ok=True)
     cmd = ["uv", "run", "--no-project", "--python", "3.12", "--with", KEV,
-           "python", "-m", "kev.serve", "--run", run, "--port", str(u.port)]
-    print(f"starting kev.serve for {run} on :{u.port} (log: {log})", flush=True)
-    p = subprocess.Popen(cmd, stdout=log.open("w"), stderr=subprocess.STDOUT, start_new_session=True)
+           "python", "-m", "kev.serve", "--run", run, "--port", str(port)]
+    print(f"starting kev.serve for {run} on :{port} (log: {log})", flush=True)
+    with log.open("w") as out:
+        p = subprocess.Popen(cmd, stdout=out, stderr=subprocess.STDOUT, start_new_session=True)
     atexit.register(lambda: (p.terminate(), p.wait()))
     t0 = time.time()
     while time.time() - t0 < timeout:
@@ -106,8 +92,8 @@ class KevHttp(Adapter):
         self.client = httpx.Client(timeout=300)
 
     def decide(self, state, q):
-        spec = {k: v for k, v in q.items() if k != "label"}
-        r = self.client.post(f"{self.url}/v1/systemone", json={"state": state, "model": "kev-latest", "questions": {"q": spec}})
+        r = self.client.post(f"{self.url}/v1/systemone",
+                             json={"state": state, "model": "kev-latest", "questions": {"q": unlabeled(q)}})
         r.raise_for_status()
         a = r.json()["answers"]["q"]
         if q["type"] == "noul":
@@ -119,15 +105,13 @@ class KevHttp(Adapter):
 
 
 class Laya(TorchAdapter):
-
     def __init__(self, cfg):
         super().__init__(cfg)
         import laya
         self.agent = laya.load(self.path, device=self.device)
 
     def decide(self, state, q):
-        spec = {k: v for k, v in q.items() if k != "label"}
-        a = self.agent.predict(state, {"q": spec})["answers"]["q"]
+        a = self.agent.predict(state, {"q": unlabeled(q)})["answers"]["q"]
         if q["type"] == "noul":
             return [1 - a["noul"], a["noul"]]
         return list(a["probabilities"].values()) if q["type"] == "score" else [a["probabilities"][k] for k in q["criteria"]]
@@ -151,7 +135,6 @@ class JevStyle(TorchAdapter):
 
 
 class Nari(TorchAdapter):
-
     def __init__(self, cfg):
         super().__init__(cfg)
         from transformers import AutoModel, AutoTokenizer
@@ -182,7 +165,7 @@ class CoCo(TorchAdapter):
         torch, dev = self.torch, self.device
         self.tok = AutoTokenizer.from_pretrained(self.path)
         model = AutoModelForCausalLM.from_pretrained(self.path, dtype=torch.bfloat16).to(dev).eval()
-        self.table = json.load(open(f"{self.path}/decision_config.json"))["readout_token_ids"]
+        self.table = json.loads(Path(self.path, "decision_config.json").read_text())["readout_token_ids"]
         self.readout = load_file(f"{self.path}/readout.safetensors")["proj.weight"].to(dev, torch.float32)
         self.inner = model.model
         st = {}

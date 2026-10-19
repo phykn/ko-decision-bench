@@ -5,6 +5,10 @@ from pathlib import Path
 MARK = {"split": "†", "related": "‡", "unknown": "?"}
 
 
+def brier(probs, y):
+    return sum((p - (k == y)) ** 2 for k, p in enumerate(probs))
+
+
 def ece(tops, correct, bins=10):
     total, n = 0.0, len(tops)
     for b in range(bins):
