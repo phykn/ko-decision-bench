@@ -6,7 +6,7 @@ A reproducible Korean benchmark for **decision models**: Jev / System One-style 
 
 ## Results
 
-Measured on 2026-10-19 on an Apple M6 with 32 GB: 8 models, 7 tasks, 1,400 questions per model, sorted by mean accuracy.
+Measured on an Apple M6 with 32 GB: 8 models, 7 tasks, 1,400 questions per model, sorted by mean accuracy.
 
 **Accuracy per task**
 
@@ -69,7 +69,7 @@ The repository ships no data or per-question results: two sources forbid redistr
 
 Scores depend on these prompts. Model cards use each model's own format and can report much higher; laya-ko reports 0.815 on KLUE-NLI and gets 0.590 here.
 
-**Contamination marks**, from the model cards as read on 2026-10-19 ([`models.toml`](models.toml)):
+**Contamination marks**, from the model cards at the pinned revisions ([`models.toml`](models.toml)):
 
 - `†` trained on another split of the same dataset (in-domain, not zero-shot)
 - `‡` trained on Korean data for the same task from another source
