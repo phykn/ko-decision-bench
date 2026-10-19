@@ -5,10 +5,15 @@ Question shapes (the Kev eval format):
   choice  {"instructions", "criteria": {name: description}, "label": name}
   score   {"instructions", "criteria": [level, ...] low to high, "label": level index}
 """
+import atexit
 import json
+import subprocess
 import sys
+import time
 
 import httpx
+
+from . import ROOT
 
 
 def options(q):
@@ -63,18 +68,49 @@ def snapshot(cfg):
                              ignore_patterns=["assets/*", "figures/*", "onnx/*", "*.gguf", "*.mp4", "*.gif", "*.png"])
 
 
+KEV = "kev[serve] @ git+https://github.com/jaredpalmer/kev@6b719c3c3f367295f6ef336f4f751cf5ff970abc"   # the commit the results were measured with
+
+
+def kev_info(url):
+    try:
+        return httpx.get(f"{url}/v1/models", timeout=5).json()["models"][0]
+    except httpx.HTTPError:
+        return None
+
+
+def start_kev(run, url, timeout=900):
+    """Start kev.serve for run on url's local port in its own uv environment (Kev pins torch<2.9, apart from the
+    models extra), with this project's HF_HOME. Stopped when kodb exits. Returns the server's /v1/models entry."""
+    u = httpx.URL(url)
+    if u.host not in ("127.0.0.1", "localhost"):
+        raise SystemExit(f"no kev.serve at {url}, and kodb starts one only on this machine")
+    log = ROOT / "logs" / f"kev-serve-{u.port}.log"
+    log.parent.mkdir(exist_ok=True)
+    cmd = ["uv", "run", "--no-project", "--python", "3.12", "--with", KEV,
+           "python", "-m", "kev.serve", "--run", run, "--port", str(u.port)]
+    print(f"starting kev.serve for {run} on :{u.port} (log: {log})", flush=True)
+    p = subprocess.Popen(cmd, stdout=log.open("w"), stderr=subprocess.STDOUT, start_new_session=True)
+    atexit.register(lambda: (p.terminate(), p.wait()))
+    t0 = time.time()
+    while time.time() - t0 < timeout:
+        if p.poll() is not None:
+            raise SystemExit(f"kev.serve exited with {p.returncode}; see {log}")
+        if m := kev_info(url):
+            return m
+        time.sleep(2)
+    raise SystemExit(f"kev.serve not ready after {timeout}s; see {log}")
+
+
 class KevHttp(Adapter):
-    """A running kev.serve (https://github.com/jaredpalmer/kev), through its System One API (POST /v1/systemone)."""
+    """kev.serve (https://github.com/jaredpalmer/kev), through its System One API (POST /v1/systemone).
+    Uses the server already at `url`, or starts one."""
     runtime = "kev.serve (HTTP)"
 
     def __init__(self, cfg):
         super().__init__(cfg)
         self.url = cfg.get("url", "http://127.0.0.1:8081")
-        try:
-            m = httpx.get(f"{self.url}/v1/models", timeout=5).json()["models"][0]
-        except httpx.HTTPError as e:
-            raise SystemExit(f"no kev.serve at {self.url} ({e}). Start one serving {cfg['repo']}@{cfg['revision']}")
         want = f"{cfg['repo']}@{cfg['revision']}"
+        m = kev_info(self.url) or start_kev(want, self.url)
         if not (m.get("run") or "").endswith(want):
             raise SystemExit(f"kev.serve at {self.url} serves {m.get('run')!r}, not {want!r}")
         self.device = f"{m.get('backend')} {m.get('device')} {m.get('dtype')}".strip()

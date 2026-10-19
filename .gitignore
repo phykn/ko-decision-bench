@@ -4,3 +4,5 @@ results/
 __pycache__/
 *.egg-info/
 .DS_Store
+weights/
+logs/
