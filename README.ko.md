@@ -6,39 +6,43 @@
 
 ## 결과
 
-Apple M6 32GB에서 측정했다. 모델 8개, 과제 7개, 모델당 1,400문항이며 평균 정확도 순으로 정렬했다.
+Apple M6 32GB에서 측정했다. 모델 10개, 과제 7개, 모델당 1,400문항이다. 순위는 **Clean** 순이다. 학습 데이터가 겹칠 수 있는 과제를 뺀 평균이므로, 평가 분포로 학습한 모델이 그만큼 앞서지 않는다. Clean 과제가 하나도 없는 모델은 맨 아래에 둔다.
 
 **과제별 정확도**
 
-| 모델 | KLUE NLI | KLUE STS | KLUE YNAT | KoBEST BoolQ | KoBEST COPA | KorNLI XNLI | UnSmile | 평균 | Clean |
-|---|---|---|---|---|---|---|---|---|---|
-| [nari-4b](https://huggingface.co/blackmallangcow/nari-decision-4b) | 0.880† | 0.470† | 0.865† | 0.945† | 0.940† | 0.790† | 0.750‡ | **0.806** | – |
-| [coco-2.4-4b](https://huggingface.co/corners-ai/CoCo-Decision-2.4-4B) | 0.900? | 0.160 | 0.855 | 0.940? | 0.940? | 0.745? | 0.690 | 0.747 | 0.568 |
-| [kev-4b](https://huggingface.co/jaredpalmer/kev-4b) | 0.815 | 0.355 | 0.730 | 0.920 | 0.955 | 0.725 | 0.685 | 0.741 | **0.741** |
-| [malkuth-2b](https://huggingface.co/dhtocks/malkuth-2b) | 0.785† | 0.175 | 0.835† | 0.905† | 0.860† | 0.730 | 0.765 | 0.722 | 0.557 |
-| [jev-style-0.8b-v3](https://huggingface.co/chaoliangUNSW/Jev-Style-0.8B-Decision-v3) | 0.690? | 0.260 | 0.565 | 0.760 | 0.620 | 0.710? | 0.620 | 0.604 | 0.565 |
-| [kev-0.8b](https://huggingface.co/jaredpalmer/kev-0.8b) | 0.680 | 0.150 | 0.645 | 0.700 | 0.685 | 0.685 | 0.665 | 0.601 | 0.601 |
-| [laya-ko](https://huggingface.co/2nugu/laya-ko) | 0.590† | 0.240† | 0.820† | 0.600 | 0.530 | 0.545 | 0.570 | 0.556 | 0.561 |
-| [laya-multilingual](https://huggingface.co/convaiinnovations/laya-multilingual) | 0.535 | 0.175 | 0.450 | 0.550 | 0.515 | 0.540 | 0.650 | 0.488 | 0.488 |
+| # | 모델 | KLUE NLI | KLUE STS | KLUE YNAT | KoBEST BoolQ | KoBEST COPA | KorNLI XNLI | UnSmile | 평균 | Clean |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | [kanana-2-v-decide-3b](https://huggingface.co/kakaocorp/kanana-2-v-decide-3b-2611) | 0.885 | 0.465 | 0.895 | 0.915 | 0.960 | 0.780 | 0.820 | **0.817** | **0.817** |
+| 2 | [pplx-decider-flash-v1.2](https://huggingface.co/perplexity-ai/pplx-decider-flash-v1.2) | 0.905 | 0.470 | 0.810 | 0.960 | 0.950 | 0.780 | 0.750 | 0.804 | 0.804 |
+| 3 | [kev-4b](https://huggingface.co/jaredpalmer/kev-4b) | 0.815 | 0.355 | 0.730 | 0.920 | 0.955 | 0.725 | 0.685 | 0.741 | 0.741 |
+| 4 | [kev-0.8b](https://huggingface.co/jaredpalmer/kev-0.8b) | 0.680 | 0.150 | 0.645 | 0.700 | 0.685 | 0.685 | 0.665 | 0.601 | 0.601 |
+| 5 | [coco-2.4-4b](https://huggingface.co/corners-ai/CoCo-Decision-2.4-4B) | 0.900? | 0.160 | 0.855 | 0.940? | 0.940? | 0.745? | 0.690 | 0.747 | 0.568 |
+| 6 | [jev-style-0.8b-v3](https://huggingface.co/chaoliangUNSW/Jev-Style-0.8B-Decision-v3) | 0.690? | 0.260 | 0.565 | 0.760 | 0.620 | 0.710? | 0.620 | 0.604 | 0.565 |
+| 7 | [laya-ko](https://huggingface.co/2nugu/laya-ko) | 0.590† | 0.240† | 0.820† | 0.600 | 0.530 | 0.545 | 0.570 | 0.556 | 0.561 |
+| 8 | [malkuth-2b](https://huggingface.co/dhtocks/malkuth-2b) | 0.785† | 0.175 | 0.835† | 0.905† | 0.860† | 0.730 | 0.765 | 0.722 | 0.557 |
+| 9 | [laya-multilingual](https://huggingface.co/convaiinnovations/laya-multilingual) | 0.535 | 0.175 | 0.450 | 0.550 | 0.515 | 0.540 | 0.650 | 0.488 | 0.488 |
+| 10 | [nari-4b](https://huggingface.co/blackmallangcow/nari-decision-4b) | 0.880† | 0.470† | 0.865† | 0.945† | 0.940† | 0.790† | 0.750‡ | 0.806 | – |
 
-`†` `‡` `?`는 학습 데이터가 겹칠 수 있음을 나타낸다([방법](#방법)). **Clean**은 표시가 없는 과제만의 평균이다.
+`†` `‡` `?`는 학습 데이터가 겹칠 수 있음을 나타낸다([방법](#방법)). **Clean**은 표시가 없는 과제만의 평균이다. 모델마다 들어가는 과제가 다르다.
 
 **보정(calibration), 전체 문항 합산**
 
-| 모델 | 정확도 ±95% | Brier | ECE | p ≥ .9 오답 | ms/문항 | 런타임 |
-|---|---|---|---|---|---|---|
-| nari-4b | 0.806 ± 0.021 | 0.276 | 0.054 | 3.4% | 781 | torch MPS |
-| coco-2.4-4b | 0.747 ± 0.023 | 0.351 | 0.118 | 5.6% | 519 | torch MPS |
-| kev-4b | 0.741 ± 0.023 | 0.345 | 0.054 | 3.2% | 148 | kev.serve MLX |
-| malkuth-2b | 0.722 ± 0.023 | 0.369 | 0.060 | 2.4% | 59 | kev.serve MLX |
-| jev-style-0.8b-v3 | 0.604 ± 0.026 | 0.520 | 0.120 | 5.3% | 155 | torch MPS |
-| kev-0.8b | 0.601 ± 0.026 | 0.510 | 0.055 | 2.5% | 28 | kev.serve MLX |
-| laya-ko | 0.556 ± 0.026 | 0.621 | 0.232 | 10.0% | 17 | torch MPS |
-| laya-multilingual | 0.488 ± 0.026 | 0.676 | 0.207 | 8.4% | 17 | torch MPS |
+| # | 모델 | 정확도 ±95% | Brier | ECE | p ≥ .9 오답 | ms/문항 | 런타임 |
+|---|---|---|---|---|---|---|---|
+| 1 | kanana-2-v-decide-3b | 0.817 ± 0.020 | 0.254 | 0.046 | 1.5% | 135 | torch MPS |
+| 2 | pplx-decider-flash-v1.2 | 0.804 ± 0.021 | 0.256 | 0.015 | 1.0% | 624 | torch MPS fp32 |
+| 3 | kev-4b | 0.741 ± 0.023 | 0.345 | 0.054 | 3.2% | 148 | kev.serve MLX |
+| 4 | kev-0.8b | 0.601 ± 0.026 | 0.510 | 0.055 | 2.5% | 28 | kev.serve MLX |
+| 5 | coco-2.4-4b | 0.747 ± 0.023 | 0.351 | 0.118 | 5.6% | 519 | torch MPS |
+| 6 | jev-style-0.8b-v3 | 0.604 ± 0.026 | 0.520 | 0.120 | 5.3% | 155 | torch MPS |
+| 7 | laya-ko | 0.556 ± 0.026 | 0.621 | 0.232 | 10.0% | 17 | torch MPS |
+| 8 | malkuth-2b | 0.722 ± 0.023 | 0.369 | 0.060 | 2.4% | 59 | kev.serve MLX |
+| 9 | laya-multilingual | 0.488 ± 0.026 | 0.676 | 0.207 | 8.4% | 17 | torch MPS |
+| 10 | nari-4b | 0.806 ± 0.021 | 0.276 | 0.054 | 3.4% | 781 | torch MPS |
 
-- 표시 없는 과제에서는 kev-4b가 가장 좋고, 보정도 상위권이다.
-- nari-4b는 정확도가 가장 높지만 7개 출처 모두의 다른 분할로 학습했다.
-- malkuth-2b는 확신 높은 오답이 가장 적고(2.4%) 문항당 59ms다.
+- kanana-2-v-decide-3b가 1위다. 표시 없는 7개 과제 평균이 0.817로, 7개 출처 모두의 다른 분할로 학습한 nari-4b의 평균(0.806)보다도 높다.
+- pplx-decider-flash-v1.2는 0.804로 2위이고 보정이 가장 좋다(ECE 0.015, 확신 높은 오답 1.0%). CUDA가 아니면 fp32로 실행되므로 MPS에서는 느리다.
+- nari-4b는 모든 과제에 표시가 있어 Clean 순위에서 빠진다.
 - 0.8B급에서는 kev-0.8b와 jev-style-0.8b-v3의 정확도가 비슷하고, 보정은 kev-0.8b가 더 좋다.
 
 ## 과제
@@ -75,12 +79,12 @@ Apple M6 32GB에서 측정했다. 모델 8개, 과제 7개, 모델당 1,400문�
 - `‡` 다른 출처의 같은 과제 한국어 데이터로 학습
 - `?` 카드에 적힌 데이터가 이 과제를 포함할 수 있음
 
-**하드웨어.** Apple M6 32GB에서 한 번에 한 모델씩 실행했다. laya, Jev-Style, nari, CoCo는 PyTorch MPS로, kev-4b, kev-0.8b, malkuth-2b는 [kev.serve](https://github.com/jaredpalmer/kev)(MLX bf16)에서 HTTP로 실행했다.
+**하드웨어.** Apple M6 32GB에서 한 번에 한 모델씩 실행했다. laya, Jev-Style, nari, CoCo, Kanana는 PyTorch MPS로, pplx-decider는 PyTorch MPS fp32(저장소 코드가 CUDA가 아니면 fp32를 쓴다)로, kev-4b, kev-0.8b, malkuth-2b는 [kev.serve](https://github.com/jaredpalmer/kev)(MLX bf16)에서 HTTP로 실행했다.
 
 ## 사용법
 
 ```bash
-uv sync --extra models          # torch, transformers, laya
+uv sync --extra models          # torch, transformers, laya 등
 uv run kodb build               # data/<task>.jsonl 생성
 uv run kodb run nari-4b all     # results/nari-4b/<task>.json 생성
 uv run kodb score               # 표 출력

@@ -87,7 +87,7 @@ def main():
         for t, d in T.TASKS.items():
             print(f"task  {t:<14} {d['type']:<7} {d['repo']} ({d['split']}), {d['license']}")
         for m, d in load_models(a.models).items():
-            print(f"model {m:<18} {d['adapter']:<10} {d['repo']}@{d['revision'][:12]}")
+            print(f"model {m:<24} {d['adapter']:<13} {d['repo']}@{d['revision'][:12]}")
 
 
 if __name__ == "__main__":

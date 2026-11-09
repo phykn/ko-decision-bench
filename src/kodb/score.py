@@ -38,6 +38,14 @@ def load_results(results_dir):
     return out
 
 
+# ranked by the clean mean, so in-domain training does not buy a higher place; models with no clean task go last,
+# then by the full mean
+def rank_key(res, trained, tasks):
+    accs = [res[t]["summary"]["acc"] for t in tasks if t in res]
+    clean = [res[t]["summary"]["acc"] for t in tasks if t in res and t not in trained]
+    return (-(sum(clean) / len(clean)) if clean else 1, -sum(accs) / len(accs))
+
+
 def report(results_dir, models_cfg, tasks=None):
     res = load_results(results_dir)
     if not res:
@@ -48,7 +56,7 @@ def report(results_dir, models_cfg, tasks=None):
 
     print("Accuracy per task.  † trained on another split of the source  ‡ related Korean data  ? card unclear")
     print(f"{'model':<{name_w}}" + "".join(f"{t:>{col_w}}" for t in tasks) + f"{'mean':>7}{'clean':>7}")
-    order = sorted(res, key=lambda m: -sum(res[m][t]["summary"]["acc"] for t in tasks if t in res[m]))
+    order = sorted(res, key=lambda m: rank_key(res[m], models_cfg.get(m, {}).get("trained_on", {}), tasks))
     for m in order:
         trained = models_cfg.get(m, {}).get("trained_on", {})
         cells, accs, clean = [], [], []

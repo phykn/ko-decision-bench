@@ -6,39 +6,43 @@ A reproducible Korean benchmark for **decision models**: Jev / System One-style 
 
 ## Results
 
-Measured on an Apple M6 with 32 GB: 8 models, 7 tasks, 1,400 questions per model, sorted by mean accuracy.
+Measured on an Apple M6 with 32 GB: 10 models, 7 tasks, 1,400 questions per model. Ranked by **Clean**, the mean over tasks with no possible training-data overlap, so training on the evaluated distribution does not buy a higher place. Models with no clean task go last.
 
 **Accuracy per task**
 
-| Model | KLUE NLI | KLUE STS | KLUE YNAT | KoBEST BoolQ | KoBEST COPA | KorNLI XNLI | UnSmile | Mean | Clean |
-|---|---|---|---|---|---|---|---|---|---|
-| [nari-4b](https://huggingface.co/blackmallangcow/nari-decision-4b) | 0.880† | 0.470† | 0.865† | 0.945† | 0.940† | 0.790† | 0.750‡ | **0.806** | – |
-| [coco-2.4-4b](https://huggingface.co/corners-ai/CoCo-Decision-2.4-4B) | 0.900? | 0.160 | 0.855 | 0.940? | 0.940? | 0.745? | 0.690 | 0.747 | 0.568 |
-| [kev-4b](https://huggingface.co/jaredpalmer/kev-4b) | 0.815 | 0.355 | 0.730 | 0.920 | 0.955 | 0.725 | 0.685 | 0.741 | **0.741** |
-| [malkuth-2b](https://huggingface.co/dhtocks/malkuth-2b) | 0.785† | 0.175 | 0.835† | 0.905† | 0.860† | 0.730 | 0.765 | 0.722 | 0.557 |
-| [jev-style-0.8b-v3](https://huggingface.co/chaoliangUNSW/Jev-Style-0.8B-Decision-v3) | 0.690? | 0.260 | 0.565 | 0.760 | 0.620 | 0.710? | 0.620 | 0.604 | 0.565 |
-| [kev-0.8b](https://huggingface.co/jaredpalmer/kev-0.8b) | 0.680 | 0.150 | 0.645 | 0.700 | 0.685 | 0.685 | 0.665 | 0.601 | 0.601 |
-| [laya-ko](https://huggingface.co/2nugu/laya-ko) | 0.590† | 0.240† | 0.820† | 0.600 | 0.530 | 0.545 | 0.570 | 0.556 | 0.561 |
-| [laya-multilingual](https://huggingface.co/convaiinnovations/laya-multilingual) | 0.535 | 0.175 | 0.450 | 0.550 | 0.515 | 0.540 | 0.650 | 0.488 | 0.488 |
+| # | Model | KLUE NLI | KLUE STS | KLUE YNAT | KoBEST BoolQ | KoBEST COPA | KorNLI XNLI | UnSmile | Mean | Clean |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | [kanana-2-v-decide-3b](https://huggingface.co/kakaocorp/kanana-2-v-decide-3b-2611) | 0.885 | 0.465 | 0.895 | 0.915 | 0.960 | 0.780 | 0.820 | **0.817** | **0.817** |
+| 2 | [pplx-decider-flash-v1.2](https://huggingface.co/perplexity-ai/pplx-decider-flash-v1.2) | 0.905 | 0.470 | 0.810 | 0.960 | 0.950 | 0.780 | 0.750 | 0.804 | 0.804 |
+| 3 | [kev-4b](https://huggingface.co/jaredpalmer/kev-4b) | 0.815 | 0.355 | 0.730 | 0.920 | 0.955 | 0.725 | 0.685 | 0.741 | 0.741 |
+| 4 | [kev-0.8b](https://huggingface.co/jaredpalmer/kev-0.8b) | 0.680 | 0.150 | 0.645 | 0.700 | 0.685 | 0.685 | 0.665 | 0.601 | 0.601 |
+| 5 | [coco-2.4-4b](https://huggingface.co/corners-ai/CoCo-Decision-2.4-4B) | 0.900? | 0.160 | 0.855 | 0.940? | 0.940? | 0.745? | 0.690 | 0.747 | 0.568 |
+| 6 | [jev-style-0.8b-v3](https://huggingface.co/chaoliangUNSW/Jev-Style-0.8B-Decision-v3) | 0.690? | 0.260 | 0.565 | 0.760 | 0.620 | 0.710? | 0.620 | 0.604 | 0.565 |
+| 7 | [laya-ko](https://huggingface.co/2nugu/laya-ko) | 0.590† | 0.240† | 0.820† | 0.600 | 0.530 | 0.545 | 0.570 | 0.556 | 0.561 |
+| 8 | [malkuth-2b](https://huggingface.co/dhtocks/malkuth-2b) | 0.785† | 0.175 | 0.835† | 0.905† | 0.860† | 0.730 | 0.765 | 0.722 | 0.557 |
+| 9 | [laya-multilingual](https://huggingface.co/convaiinnovations/laya-multilingual) | 0.535 | 0.175 | 0.450 | 0.550 | 0.515 | 0.540 | 0.650 | 0.488 | 0.488 |
+| 10 | [nari-4b](https://huggingface.co/blackmallangcow/nari-decision-4b) | 0.880† | 0.470† | 0.865† | 0.945† | 0.940† | 0.790† | 0.750‡ | 0.806 | – |
 
-`†` `‡` `?` mark possible training-data overlap ([Method](#method)). **Clean** is the mean over unmarked tasks.
+`†` `‡` `?` mark possible training-data overlap ([Method](#method)). **Clean** is the mean over unmarked tasks, a different set per model.
 
 **Calibration, all questions pooled**
 
-| Model | Accuracy ±95% | Brier | ECE | p ≥ .9 wrong | ms/q | Runtime |
-|---|---|---|---|---|---|---|
-| nari-4b | 0.806 ± 0.021 | 0.276 | 0.054 | 3.4% | 781 | torch MPS |
-| coco-2.4-4b | 0.747 ± 0.023 | 0.351 | 0.118 | 5.6% | 519 | torch MPS |
-| kev-4b | 0.741 ± 0.023 | 0.345 | 0.054 | 3.2% | 148 | kev.serve MLX |
-| malkuth-2b | 0.722 ± 0.023 | 0.369 | 0.060 | 2.4% | 59 | kev.serve MLX |
-| jev-style-0.8b-v3 | 0.604 ± 0.026 | 0.520 | 0.120 | 5.3% | 155 | torch MPS |
-| kev-0.8b | 0.601 ± 0.026 | 0.510 | 0.055 | 2.5% | 28 | kev.serve MLX |
-| laya-ko | 0.556 ± 0.026 | 0.621 | 0.232 | 10.0% | 17 | torch MPS |
-| laya-multilingual | 0.488 ± 0.026 | 0.676 | 0.207 | 8.4% | 17 | torch MPS |
+| # | Model | Accuracy ±95% | Brier | ECE | p ≥ .9 wrong | ms/q | Runtime |
+|---|---|---|---|---|---|---|---|
+| 1 | kanana-2-v-decide-3b | 0.817 ± 0.020 | 0.254 | 0.046 | 1.5% | 135 | torch MPS |
+| 2 | pplx-decider-flash-v1.2 | 0.804 ± 0.021 | 0.256 | 0.015 | 1.0% | 624 | torch MPS fp32 |
+| 3 | kev-4b | 0.741 ± 0.023 | 0.345 | 0.054 | 3.2% | 148 | kev.serve MLX |
+| 4 | kev-0.8b | 0.601 ± 0.026 | 0.510 | 0.055 | 2.5% | 28 | kev.serve MLX |
+| 5 | coco-2.4-4b | 0.747 ± 0.023 | 0.351 | 0.118 | 5.6% | 519 | torch MPS |
+| 6 | jev-style-0.8b-v3 | 0.604 ± 0.026 | 0.520 | 0.120 | 5.3% | 155 | torch MPS |
+| 7 | laya-ko | 0.556 ± 0.026 | 0.621 | 0.232 | 10.0% | 17 | torch MPS |
+| 8 | malkuth-2b | 0.722 ± 0.023 | 0.369 | 0.060 | 2.4% | 59 | kev.serve MLX |
+| 9 | laya-multilingual | 0.488 ± 0.026 | 0.676 | 0.207 | 8.4% | 17 | torch MPS |
+| 10 | nari-4b | 0.806 ± 0.021 | 0.276 | 0.054 | 3.4% | 781 | torch MPS |
 
-- kev-4b is the best on unmarked tasks and among the best calibrated.
-- nari-4b has the highest accuracy, but trained on other splits of all seven sources.
-- malkuth-2b has the fewest high-confidence errors (2.4%) at 59 ms.
+- kanana-2-v-decide-3b ranks first: 0.817 on seven unmarked tasks, above even the mean of nari-4b (0.806), which trained on other splits of all seven sources.
+- pplx-decider-flash-v1.2 is second at 0.804 and the best calibrated (ECE 0.015, 1.0% high-confidence errors). Off CUDA it runs in fp32, so it is slow on MPS.
+- nari-4b has a mark on every task, so it has no Clean score and ranks last.
 - Among 0.8B models, kev-0.8b matches jev-style-0.8b-v3 in accuracy and is better calibrated.
 
 ## Tasks
@@ -75,12 +79,12 @@ Scores depend on these prompts. Model cards use each model's own format and can 
 - `‡` trained on Korean data for the same task from another source
 - `?` the card describes data that might cover the task
 
-**Hardware.** Apple M6, 32 GB, one model at a time. laya, Jev-Style, nari, and CoCo ran in PyTorch on MPS; kev-4b, kev-0.8b, and malkuth-2b ran in [kev.serve](https://github.com/jaredpalmer/kev) on MLX bf16 over HTTP.
+**Hardware.** Apple M6, 32 GB, one model at a time. laya, Jev-Style, nari, CoCo, and Kanana ran in PyTorch on MPS; pplx-decider ran in PyTorch on MPS in fp32 (its code uses fp32 off CUDA); kev-4b, kev-0.8b, and malkuth-2b ran in [kev.serve](https://github.com/jaredpalmer/kev) on MLX bf16 over HTTP.
 
 ## Usage
 
 ```bash
-uv sync --extra models          # torch, transformers, laya
+uv sync --extra models          # torch, transformers, laya, ...
 uv run kodb build               # write data/<task>.jsonl
 uv run kodb run nari-4b all     # write results/nari-4b/<task>.json
 uv run kodb score               # print the tables

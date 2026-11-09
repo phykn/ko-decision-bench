@@ -204,4 +204,38 @@ class CoCo(TorchAdapter):
         return self.torch.softmax((self.readout @ hidden)[rows], dim=-1).tolist()
 
 
-ADAPTERS = {"kev-http": KevHttp, "laya": Laya, "jev-style": JevStyle, "nari": Nari, "coco": CoCo}
+def system_one_probs(q, a):
+    if q["type"] == "noul":
+        return [1 - a["noul"], a["noul"]]
+    if q["type"] == "choice":
+        return [a["probabilities"][k] for k in q["criteria"]]
+    return list(a["probabilities"].values())   # score levels, lowest first
+
+
+class Kanana(TorchAdapter):
+    def __init__(self, cfg):
+        super().__init__(cfg)
+        from transformers import AutoModel
+        self.model = AutoModel.from_pretrained(self.path, trust_remote_code=True,
+                                               dtype=self.torch.bfloat16).to(self.device).eval()
+
+    def decide(self, state, q):
+        a = self.model.system_one(state=state, questions={"q": unlabeled(q)})["answers"]["q"]
+        return system_one_probs(q, a)
+
+
+# one question per request, the mode the card recommends for this model
+class PplxDecider(TorchAdapter):
+    def __init__(self, cfg):
+        super().__init__(cfg)
+        sys.path.insert(0, f"{self.path}/source/src")
+        from pplx_decider import Decider
+        self.decider = Decider.from_pretrained(self.path, device=self.device)
+
+    def decide(self, state, q):
+        a = self.decider.decide({"state": state, "questions": {"q": unlabeled(q)}})["answers"]["q"]
+        return system_one_probs(q, a)
+
+
+ADAPTERS = {"kev-http": KevHttp, "laya": Laya, "jev-style": JevStyle, "nari": Nari, "coco": CoCo,
+            "kanana": Kanana, "pplx-decider": PplxDecider}

@@ -68,3 +68,19 @@ revision = "1720e3e3357cfe1e281542e223f8273b0890ca34"
 card_license = "Apache-2.0"
 trained_on = {}
 note = "Card does not list its training data; it reports XNLI in 15 languages (Korean is not an XNLI language)."
+
+[models."kanana-2-v-decide-3b"]
+adapter = "kanana"
+repo = "kakaocorp/kanana-2-v-decide-3b-2611"
+revision = "1489062def4145ae3a0a9261fbac4f4d88a8c6d1"
+card_license = "Kanana Open License"
+trained_on = {}
+note = "Card does not list its training data; it reports Kakao's in-house Korean decision set (Kanana Decision Bench) and Decision Index. Card read on 2026-11-09."
+
+[models."pplx-decider-flash-v1.2"]
+adapter = "pplx-decider"
+repo = "perplexity-ai/pplx-decider-flash-v1.2"
+revision = "9ff7cf9838e59df461c276b7699d56b244d2af58"
+card_license = "Apache-2.0"
+trained_on = {}
+note = "Qwen3.5-4B distilled from the 27B pplx-deciders; card credits tasksource data without listing datasets; the tasksource task list (sileod/tasksource main) has English BoolQ and COPA but no Korean sets. Reference path (fp32 off CUDA), one question per request. Card read on 2026-11-09."
