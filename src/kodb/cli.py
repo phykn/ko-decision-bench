@@ -1,53 +1,14 @@
 import argparse
-import hashlib
-import json
-import time
 import tomllib
-from datetime import date
 from pathlib import Path
 
 from . import tasks as T
-from .adapters import ADAPTERS
-from .score import brier, report
+from .run import run_model
+from .score import print_tables
 
 
 def load_models(path):
     return tomllib.loads(Path(path).read_text(encoding="utf-8"))["models"]
-
-
-def run(model, task_names, cfg, data_dir, results_dir):
-    t0 = time.time()
-    adapter = ADAPTERS[cfg["adapter"]](cfg)
-    load_s = time.time() - t0
-    for task in task_names:
-        recs = T.load(task, data_dir)
-        first = next(iter(recs[0]["questions"].values()))
-        adapter.decide(recs[0]["state"], first)   # warm-up, not timed
-        rows = []
-        for rec in recs:
-            for qid, q in rec["questions"].items():
-                t1 = time.perf_counter()
-                p = adapter.decide(rec["state"], q)
-                adapter.sync()
-                ms = (time.perf_counter() - t1) * 1000
-                total = sum(p)
-                p = [x / total for x in p]
-                y = T.label_index(q)
-                top = max(range(len(p)), key=p.__getitem__)
-                rows.append({"id": rec["id"], "question": qid, "type": q["type"], "label": T.options(q)[y],
-                             "answer": T.options(q)[top], "probs": [round(x, 5) for x in p], "correct": top == y,
-                             "brier": round(brier(p, y), 5), "ms": round(ms, 1)})
-        data = (Path(data_dir) / f"{task}.jsonl").read_bytes()
-        acc = sum(r["correct"] for r in rows) / len(rows)
-        out = Path(results_dir) / model / f"{task}.json"
-        out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(json.dumps({
-            "model": model, "repo": cfg["repo"], "revision": cfg["revision"], "task": task,
-            "data_sha256": hashlib.sha256(data).hexdigest(), "date": date.today().isoformat(),
-            "runtime": adapter.runtime, "device": adapter.device, "load_s": round(load_s, 1),
-            "summary": {"n": len(rows), "acc": acc, "ms": sum(r["ms"] for r in rows) / len(rows)},
-            "rows": rows}, ensure_ascii=False, indent=1), encoding="utf-8")
-        print(f"{model} {task}: acc {acc:.3f} on {len(rows)} -> {out}", flush=True)
 
 
 def main():
@@ -64,8 +25,9 @@ def main():
     r.add_argument("model")
     r.add_argument("tasks", nargs="+", help="task names, or 'all'")
     r.add_argument("--url", help="HTTP adapters: server address (defaults: kev-http :8081, startlux :8090, h2o :8741)")
-    s = sub.add_parser("score", help="print the comparison tables")
+    s = sub.add_parser("score", help="print the README tables")
     s.add_argument("tasks", nargs="*", help="default: every task with results")
+    s.add_argument("--lang", choices=("en", "ko"), default="en", help="language of the table headers")
     sub.add_parser("list", help="list tasks and models")
     a = ap.parse_args()
 
@@ -79,16 +41,11 @@ def main():
         unknown = [t for t in names if t not in T.TASKS]
         if unknown:
             raise SystemExit(f"unknown task(s) {unknown}; known: {list(T.TASKS)}")
-        cfg = dict(models[a.model], **({"url": a.url} if a.url else {}))
-        run(a.model, names, cfg, a.data, a.results)
+        run_model(a.model, names, dict(models[a.model], **({"url": a.url} if a.url else {})), a.data, a.results)
     elif a.cmd == "score":
-        report(a.results, load_models(a.models), a.tasks or None)
+        print_tables(a.results, load_models(a.models), a.tasks or None, a.lang)
     else:
         for t, d in T.TASKS.items():
             print(f"task  {t:<14} {d['type']:<7} {d['repo']} ({d['split']}), {d['license']}")
         for m, d in load_models(a.models).items():
             print(f"model {m:<27} {d['adapter']:<13} {d['repo']}@{d['revision'][:12]}")
-
-
-if __name__ == "__main__":
-    main()
