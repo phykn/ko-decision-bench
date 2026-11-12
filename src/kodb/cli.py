@@ -63,7 +63,7 @@ def main():
     r = sub.add_parser("run", help="run one model on tasks and write results/<model>/<task>.json")
     r.add_argument("model")
     r.add_argument("tasks", nargs="+", help="task names, or 'all'")
-    r.add_argument("--url", help="kev-http adapter: kev.serve address (default http://127.0.0.1:8081)")
+    r.add_argument("--url", help="HTTP adapters: server address (defaults: kev-http :8081, startlux :8090, h2o :8741)")
     s = sub.add_parser("score", help="print the comparison tables")
     s.add_argument("tasks", nargs="*", help="default: every task with results")
     sub.add_parser("list", help="list tasks and models")
@@ -87,7 +87,7 @@ def main():
         for t, d in T.TASKS.items():
             print(f"task  {t:<14} {d['type']:<7} {d['repo']} ({d['split']}), {d['license']}")
         for m, d in load_models(a.models).items():
-            print(f"model {m:<24} {d['adapter']:<13} {d['repo']}@{d['revision'][:12]}")
+            print(f"model {m:<27} {d['adapter']:<13} {d['repo']}@{d['revision'][:12]}")
 
 
 if __name__ == "__main__":

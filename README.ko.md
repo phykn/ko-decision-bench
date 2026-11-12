@@ -6,7 +6,7 @@
 
 ## 결과
 
-Apple M6 32GB에서 측정했다. 모델 10개, 과제 7개, 모델당 1,400문항이다. 순위는 **Clean** 순이다. 학습 데이터가 겹칠 수 있는 과제를 뺀 평균이므로, 평가 분포로 학습한 모델이 그만큼 앞서지 않는다. Clean 과제가 하나도 없는 모델은 맨 아래에 둔다.
+Apple M6 32GB에서 측정했다. 모델 14개, 과제 7개, 모델당 1,400문항이다. 순위는 **Clean** 순이다. 학습 데이터가 겹칠 수 있는 과제를 뺀 평균이므로, 평가 분포로 학습한 모델이 그만큼 앞서지 않는다. Clean 과제가 하나도 없는 모델은 맨 아래에 둔다.
 
 **과제별 정확도**
 
@@ -14,14 +14,18 @@ Apple M6 32GB에서 측정했다. 모델 10개, 과제 7개, 모델당 1,400문�
 |---|---|---|---|---|---|---|---|---|---|---|
 | 1 | [kanana-2-v-decide-3b](https://huggingface.co/kakaocorp/kanana-2-v-decide-3b-2611) | 0.885 | 0.465 | 0.895 | 0.915 | 0.960 | 0.780 | 0.820 | **0.817** | **0.817** |
 | 2 | [pplx-decider-flash-v1.2](https://huggingface.co/perplexity-ai/pplx-decider-flash-v1.2) | 0.905 | 0.470 | 0.810 | 0.960 | 0.950 | 0.780 | 0.750 | 0.804 | 0.804 |
-| 3 | [kev-4b](https://huggingface.co/jaredpalmer/kev-4b) | 0.815 | 0.355 | 0.730 | 0.920 | 0.955 | 0.725 | 0.685 | 0.741 | 0.741 |
-| 4 | [kev-0.8b](https://huggingface.co/jaredpalmer/kev-0.8b) | 0.680 | 0.150 | 0.645 | 0.700 | 0.685 | 0.685 | 0.665 | 0.601 | 0.601 |
-| 5 | [coco-2.4-4b](https://huggingface.co/corners-ai/CoCo-Decision-2.4-4B) | 0.900? | 0.160 | 0.855 | 0.940? | 0.940? | 0.745? | 0.690 | 0.747 | 0.568 |
-| 6 | [jev-style-0.8b-v3](https://huggingface.co/chaoliangUNSW/Jev-Style-0.8B-Decision-v3) | 0.690? | 0.260 | 0.565 | 0.760 | 0.620 | 0.710? | 0.620 | 0.604 | 0.565 |
-| 7 | [laya-ko](https://huggingface.co/2nugu/laya-ko) | 0.590† | 0.240† | 0.820† | 0.600 | 0.530 | 0.545 | 0.570 | 0.556 | 0.561 |
-| 8 | [malkuth-2b](https://huggingface.co/dhtocks/malkuth-2b) | 0.785† | 0.175 | 0.835† | 0.905† | 0.860† | 0.730 | 0.765 | 0.722 | 0.557 |
-| 9 | [laya-multilingual](https://huggingface.co/convaiinnovations/laya-multilingual) | 0.535 | 0.175 | 0.450 | 0.550 | 0.515 | 0.540 | 0.650 | 0.488 | 0.488 |
-| 10 | [nari-4b](https://huggingface.co/blackmallangcow/nari-decision-4b) | 0.880† | 0.470† | 0.865† | 0.945† | 0.940† | 0.790† | 0.750‡ | 0.806 | – |
+| 3 | [startlux-4b-instant](https://huggingface.co/startlux-models/StartLux-Decision-v1.1-4B-Instant) | 0.910 | 0.415 | 0.770 | 0.960 | 0.970 | 0.810 | 0.700 | 0.791 | 0.791 |
+| 4 | [thx-02](https://huggingface.co/HAL-X-AI/THX-02) | 0.910 | 0.365 | 0.825 | 0.960 | 0.950 | 0.770 | 0.750 | 0.790 | 0.790 |
+| 5 | [h2o-lightning-4b](https://huggingface.co/h2oai/h2o-lightning-4b) | 0.870 | 0.405 | 0.800 | 0.935 | 0.955 | 0.780 | 0.730 | 0.782 | 0.782 |
+| 6 | [autotrust-decider-mini-9b](https://huggingface.co/autotrust/AutoTrust-Decider-Mini-9B) | 0.865 | 0.265 | 0.720 | 0.955 | 0.950 | 0.750 | 0.735 | 0.749 | 0.749 |
+| 7 | [kev-4b](https://huggingface.co/jaredpalmer/kev-4b) | 0.815 | 0.355 | 0.730 | 0.920 | 0.955 | 0.725 | 0.685 | 0.741 | 0.741 |
+| 8 | [kev-0.8b](https://huggingface.co/jaredpalmer/kev-0.8b) | 0.680 | 0.150 | 0.645 | 0.700 | 0.685 | 0.685 | 0.665 | 0.601 | 0.601 |
+| 9 | [coco-2.4-4b](https://huggingface.co/corners-ai/CoCo-Decision-2.4-4B) | 0.900? | 0.160 | 0.855 | 0.940? | 0.940? | 0.745? | 0.690 | 0.747 | 0.568 |
+| 10 | [jev-style-0.8b-v3](https://huggingface.co/chaoliangUNSW/Jev-Style-0.8B-Decision-v3) | 0.690? | 0.260 | 0.565 | 0.760 | 0.620 | 0.710? | 0.620 | 0.604 | 0.565 |
+| 11 | [laya-ko](https://huggingface.co/2nugu/laya-ko) | 0.590† | 0.240† | 0.820† | 0.600 | 0.530 | 0.545 | 0.570 | 0.556 | 0.561 |
+| 12 | [malkuth-2b](https://huggingface.co/dhtocks/malkuth-2b) | 0.785† | 0.175 | 0.835† | 0.905† | 0.860† | 0.730 | 0.765 | 0.722 | 0.557 |
+| 13 | [laya-multilingual](https://huggingface.co/convaiinnovations/laya-multilingual) | 0.535 | 0.175 | 0.450 | 0.550 | 0.515 | 0.540 | 0.650 | 0.488 | 0.488 |
+| 14 | [nari-4b](https://huggingface.co/blackmallangcow/nari-decision-4b) | 0.880† | 0.470† | 0.865† | 0.945† | 0.940† | 0.790† | 0.750‡ | 0.806 | – |
 
 `†` `‡` `?`는 학습 데이터가 겹칠 수 있음을 나타낸다([방법](#방법)). **Clean**은 표시가 없는 과제만의 평균이다. 모델마다 들어가는 과제가 다르다.
 
@@ -31,17 +35,23 @@ Apple M6 32GB에서 측정했다. 모델 10개, 과제 7개, 모델당 1,400문�
 |---|---|---|---|---|---|---|---|
 | 1 | kanana-2-v-decide-3b | 0.817 ± 0.020 | 0.254 | 0.046 | 1.5% | 135 | torch MPS |
 | 2 | pplx-decider-flash-v1.2 | 0.804 ± 0.021 | 0.256 | 0.015 | 1.0% | 624 | torch MPS fp32 |
-| 3 | kev-4b | 0.741 ± 0.023 | 0.345 | 0.054 | 3.2% | 148 | kev.serve MLX |
-| 4 | kev-0.8b | 0.601 ± 0.026 | 0.510 | 0.055 | 2.5% | 28 | kev.serve MLX |
-| 5 | coco-2.4-4b | 0.747 ± 0.023 | 0.351 | 0.118 | 5.6% | 519 | torch MPS |
-| 6 | jev-style-0.8b-v3 | 0.604 ± 0.026 | 0.520 | 0.120 | 5.3% | 155 | torch MPS |
-| 7 | laya-ko | 0.556 ± 0.026 | 0.621 | 0.232 | 10.0% | 17 | torch MPS |
-| 8 | malkuth-2b | 0.722 ± 0.023 | 0.369 | 0.060 | 2.4% | 59 | kev.serve MLX |
-| 9 | laya-multilingual | 0.488 ± 0.026 | 0.676 | 0.207 | 8.4% | 17 | torch MPS |
-| 10 | nari-4b | 0.806 ± 0.021 | 0.276 | 0.054 | 3.4% | 781 | torch MPS |
+| 3 | startlux-4b-instant | 0.791 ± 0.021 | 0.286 | 0.020 | 1.5% | 235 | startlux-decide MPS |
+| 4 | thx-02 | 0.790 ± 0.021 | 0.259 | 0.041 | 1.2% | 590 | torch MPS fp32 |
+| 5 | h2o-lightning-4b | 0.782 ± 0.022 | 0.302 | 0.059 | 2.5% | 164 | h2o shim MLX |
+| 6 | autotrust-decider-mini-9b | 0.749 ± 0.023 | 0.323 | 0.036 | 1.5% | 368 | torch MPS |
+| 7 | kev-4b | 0.741 ± 0.023 | 0.345 | 0.054 | 3.2% | 148 | kev.serve MLX |
+| 8 | kev-0.8b | 0.601 ± 0.026 | 0.510 | 0.055 | 2.5% | 28 | kev.serve MLX |
+| 9 | coco-2.4-4b | 0.747 ± 0.023 | 0.351 | 0.118 | 5.6% | 519 | torch MPS |
+| 10 | jev-style-0.8b-v3 | 0.604 ± 0.026 | 0.520 | 0.120 | 5.3% | 155 | torch MPS |
+| 11 | laya-ko | 0.556 ± 0.026 | 0.621 | 0.232 | 10.0% | 17 | torch MPS |
+| 12 | malkuth-2b | 0.722 ± 0.023 | 0.369 | 0.060 | 2.4% | 59 | kev.serve MLX |
+| 13 | laya-multilingual | 0.488 ± 0.026 | 0.676 | 0.207 | 8.4% | 17 | torch MPS |
+| 14 | nari-4b | 0.806 ± 0.021 | 0.276 | 0.054 | 3.4% | 781 | torch MPS |
 
 - kanana-2-v-decide-3b가 1위다. 표시 없는 7개 과제 평균이 0.817로, 7개 출처 모두의 다른 분할로 학습한 nari-4b의 평균(0.806)보다도 높다.
 - pplx-decider-flash-v1.2는 0.804로 2위이고 보정이 가장 좋다(ECE 0.015, 확신 높은 오답 1.0%). CUDA가 아니면 fp32로 실행되므로 MPS에서는 느리다.
+- startlux-4b-instant(0.791)와 thx-02(0.790)는 ±0.021 구간 안에서 동률이다. THX-02는 pplx-decider-flash의 코드와 저장된 temperature를 그대로 쓰며, KLUE STS를 뺀 6개 과제에서 0.015 이내로 같은 점수를 낸다.
+- autotrust-decider-mini-9b는 이 표에서 가장 큰 모델(9B)이고 6위다. score 단계가 0~5로 고정이라 KLUE STS에서는 단계의 뜻을 선택지가 아니라 질문에 넣었다.
 - nari-4b는 모든 과제에 표시가 있어 Clean 순위에서 빠진다.
 - 0.8B급에서는 kev-0.8b와 jev-style-0.8b-v3의 정확도가 비슷하고, 보정은 kev-0.8b가 더 좋다.
 
@@ -79,7 +89,7 @@ Apple M6 32GB에서 측정했다. 모델 10개, 과제 7개, 모델당 1,400문�
 - `‡` 다른 출처의 같은 과제 한국어 데이터로 학습
 - `?` 카드에 적힌 데이터가 이 과제를 포함할 수 있음
 
-**하드웨어.** Apple M6 32GB에서 한 번에 한 모델씩 실행했다. laya, Jev-Style, nari, CoCo, Kanana는 PyTorch MPS로, pplx-decider는 PyTorch MPS fp32(저장소 코드가 CUDA가 아니면 fp32를 쓴다)로, kev-4b, kev-0.8b, malkuth-2b는 [kev.serve](https://github.com/jaredpalmer/kev)(MLX bf16)에서 HTTP로 실행했다.
+**하드웨어.** Apple M6 32GB에서 한 번에 한 모델씩 실행했다. laya, Jev-Style, nari, CoCo, Kanana는 PyTorch MPS로, pplx-decider와 THX-02는 PyTorch MPS fp32(저장소 코드가 CUDA가 아니면 fp32를 쓴다)로, AutoTrust는 카드의 transformers + peft 방식대로 PyTorch MPS bf16으로, StartLux는 자체 [startlux-decide](https://github.com/StartLuxLabs/StartLux-Decision) 서버(transformers 백엔드, MPS bf16)로, h2o-lightning-4b는 공식 bf16 웨이트를 H2O shim과 [h2o-lightning-mlx](https://github.com/internet-projects/h2o-lightning-mlx) MLX 엔진으로(two-way, 기본 프로필), kev-4b, kev-0.8b, malkuth-2b는 [kev.serve](https://github.com/jaredpalmer/kev)(MLX bf16)에서 HTTP로 실행했다.
 
 ## 사용법
 
@@ -92,10 +102,10 @@ uv run kodb score               # 표 출력
 
 Hugging Face에서 받는 웨이트와 출처 데이터는 모두 `weights/`에 저장된다. kodb가 `HF_HOME`을 이 폴더로 지정하며, 직접 설정한 `HF_HOME`이 있으면 그것을 따른다.
 
-Kev 형식 모델은 kev.serve에서 실행된다. `kodb run`은 `--url`(기본 `http://127.0.0.1:8081`)의 서버가 `models.toml`의 `repo@revision`을 서빙하면 그 서버를 쓰고, 서버가 없으면 그 주소에 직접 띄운다. 서버는 별도 uv 환경(Python 3.12, 결과 측정에 쓴 Kev 커밋)에서 실행되고, 로그는 `logs/`에 남으며, kodb가 끝나면 종료된다.
+Kev 형식 모델은 kev.serve에서 실행된다. `kodb run`은 `--url`(기본 `http://127.0.0.1:8081`)의 서버가 `models.toml`의 `repo@revision`을 서빙하면 그 서버를 쓰고, 서버가 없으면 그 주소에 직접 띄운다. 서버는 별도 uv 환경(Python 3.12, 결과 측정에 쓴 Kev 커밋)에서 실행되고, 로그는 `logs/`에 남으며, kodb가 끝나면 종료된다. StartLux와 h2o도 같은 방식으로 서버를 띄운다. StartLux는 transformers 5.8을 쓰는 별도 uv 환경에서 startlux-decide를 실행하고(`--url` 기본 `:8090`), h2o는 처음 실행할 때 h2o-lightning-mlx v1.4.2를 `weights/`에 받아 설정한 뒤 실행한다(`:8741`).
 
 **모델 추가**: [`adapters.py`](src/kodb/adapters.py)에서 `Adapter`를 상속해 `decide(state, q)`가 `options(q)` 순서로 확률을 반환하게 하고, `ADAPTERS`에 등록한 뒤 `models.toml`에 `repo`, `revision`, `trained_on`을 추가한다.
 
 ## 라이선스
 
-코드는 Apache-2.0이다. 데이터셋과 모델은 각자의 라이선스를 따르며(위 표와 각 모델 카드), malkuth-2b 웨이트는 CC BY-NC 4.0이다.
+코드는 Apache-2.0이다. 데이터셋과 모델은 각자의 라이선스를 따르며(위 표와 각 모델 카드), malkuth-2b와 StartLux 웨이트는 CC BY-NC 4.0, Kanana 웨이트는 Kanana Open License다.

@@ -84,3 +84,35 @@ revision = "9ff7cf9838e59df461c276b7699d56b244d2af58"
 card_license = "Apache-2.0"
 trained_on = {}
 note = "Qwen3.5-4B distilled from the 27B pplx-deciders; card credits tasksource data without listing datasets; the tasksource task list (sileod/tasksource main) has English BoolQ and COPA but no Korean sets. Reference path (fp32 off CUDA), one question per request. Card read on 2026-11-09."
+
+[models."autotrust-decider-mini-9b"]
+adapter = "autotrust"
+repo = "autotrust/AutoTrust-Decider-Mini-9B"
+revision = "7ac669b8fb476ba926491e3d1c39f9330d68dbed"
+card_license = "Apache-2.0"
+trained_on = {}
+note = "Qwen3.5-9B plus a LoRA and a 24-slot head distilled from TypeSafe Jev 1.13 outputs (SargeDev/jev-distill-corpus-v3: synthetic operational scenarios and Open-Jev programmatic tasks); no Korean data listed. Card recipe (transformers + peft); score uses the fixed 0-5 levels with the level meanings in the question. Card read on 2026-11-12."
+
+[models."startlux-4b-instant"]
+adapter = "startlux"
+repo = "startlux-models/StartLux-Decision-v1.1-4B-Instant"
+revision = "416088f77cfce09633906a3675c7cd2e5dabcf10"
+card_license = "CC BY-NC 4.0"
+trained_on = {}
+note = "Qwen3.5-4B fine-tuned on about 4.4 million decision examples that the card does not name; language listed as English. Served by startlux-decide (StartLuxLabs/StartLux-Decision a99977d, transformers backend, bidirectional prompt attention). Card read on 2026-11-12."
+
+[models."h2o-lightning-4b"]
+adapter = "h2o"
+repo = "h2oai/h2o-lightning-4b"
+revision = "659fc412de8486dbc2477b0d1cb4121e97e72471"
+card_license = "Apache-2.0"
+trained_on = {}
+note = "Qwen3.5-4B decision model; the card names no Korean training data. Official bf16 weights under H2O's shim on the h2o-lightning-mlx facade (internet-projects/h2o-lightning-mlx v1.4.2), two-way reading, default serving profile. Card read on 2026-11-12."
+
+[models."thx-02"]
+adapter = "thx02"
+repo = "HAL-X-AI/THX-02"
+revision = "8262da06636501d98a060edf8d81b4c1b1eea46a"
+card_license = "Apache-2.0"
+trained_on = {}
+note = "Qwen3.5-4B distilled from a 27B decision model on train splits of public decision benchmarks plus multilingual synthetic data, and translated requests in eight languages (not Korean); the card names no Korean sets. Its code and saved temperature match pplx-decider-flash-v1.2's, so it likely starts from it. The repo's thx02 runtime, no thinker: direct reads only. Card read on 2026-11-12."
